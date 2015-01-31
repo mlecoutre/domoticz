@@ -1,0 +1,28 @@
+ access_log off;
+ add_header Cache-Control public;
+ server_tokens off;
+ server  {
+   include    /etc/nginx/proxy_params;
+   listen 80;
+   root /home/mat/www;
+   index index.html index.htm;
+
+   keepalive_timeout 70;
+   server_name localhost malrin.ddns.net;
+   add_header X-Frame-Options SAMEORIGIN;
+	
+   location / {
+#	  rewrite ^(.*)$ /home/mat/www/$1 break;
+   }
+
+   location ^~ /domoticz/ {
+     rewrite /domoticz/(.*) /$1 break;
+     rewrite /#/domoticz/(.*) /$1 break;
+     proxy_redirect off;
+     proxy_set_header Host $host;
+     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+     proxy_pass http://localhost:7070/;
+     access_log /var/log/nginx/domoticz.access.log;
+     error_log /var/log/nginx/domoticz.error.log;
+    }
+ }
