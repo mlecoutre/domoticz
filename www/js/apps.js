@@ -9,3 +9,4 @@ angular.module('raspyApp', ['ngRoute']).
     	when('/domoticz', {templateUrl: 'domoticz/index.html'}).
     	otherwise({redirectTo: '/index'});
   }]);
+
