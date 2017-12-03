@@ -1,13 +1,14 @@
 ---------------------------------
---Script to calculate duration and distance between two points using Google Maps
+--
 --Author   : woody4165 based on Neutrino Traffic with Waze, updated by G3rard
 --Date     : 9 April 2016 
 ---------------------------------
 commandArray={}
-
+logPrefix = "MAP - "
 time = os.date("*t")
 day = tonumber(os.date("%w"))
 
+print logPrefix .. "DEBUG script"
 --idx of devices for capturing the travel minutes in both direction
 idxtraffic='4'
 idxroute='5'
@@ -30,7 +31,7 @@ else
     week=false; weekend=true
 end
 
---determine time (7:00-9:00, 16:00-19:00)
+--determine time (7:00-8:30, 17:30-19:00)
 if ((time.hour > 6 and time.hour < 9) or (time.hour == 9 and time.min < 1)) then
     mattina=true; sera=false
 elseif ((time.hour > 15 and time.hour < 19) or (time.hour == 19 and time.min < 1)) then
@@ -38,7 +39,10 @@ elseif ((time.hour > 15 and time.hour < 19) or (time.hour == 19 and time.min < 1
 else
     mattina=false; sera=false
 end
-
+ --
+ -- le temps de debugger
+ mattina=true; sera=true
+ --
 
 --calculate traveltime
 function traveltime(fromx,fromy,tox,toy)
@@ -56,7 +60,7 @@ function traveltime(fromx,fromy,tox,toy)
     duration = gmaps.routes[1].legs[1].duration_in_traffic.text
     summary = gmaps.routes[1].summary
     mins=0
-    -- mins is only the number part of duration (for evaulation purpose or to return a number in a number device)
+    -- mins is only the number part of duration (for evaulation pu``rpose or to return a number in a number device)
     for minutes in string.gmatch(duration, "%d+") do mins = tonumber(minutes) end
     return mins
 end
